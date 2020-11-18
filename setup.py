@@ -1,26 +1,10 @@
-from pathlib import Path
+# Automatically created by: shub deploy
+
 from setuptools import setup, find_packages
 
-
 setup(
-    name='inmates',
-    description='a CLI tool for listing inmates',
-    version_format='{tag}.dev{commitcount}+{gitsha}',
-    setup_requires=[
-        'setuptools-git-version==1.0.3'
-    ],
-    packages=find_packages(exclude=['tests']),
-    package_data={'inmates': [str(Path('inmates.csv').absolute())]},
-    maintainer='Emmanuel I. Obi',
-    maintainer_email='withtwoemms@gmail.com',
-    url='',
-    include_package_data=True,
-    install_requires=[
-        'OSlash==0.5.1',
-        'toolz==0.10.0'
-    ],
-    entry_points="""
-        [console_scripts]
-        inmates=inmates.cli:cli
-    """,
+    name         = 'project',
+    version      = '1.0',
+    packages     = find_packages(),
+    entry_points = {'scrapy': ['settings = inmates.scraper.settings.base']},
 )

@@ -8,7 +8,7 @@ This project is being conducted on behalf of Chicago Community Bond Fund.
 
 Chicago Community Bond fund is struggling to meet capacity. New donations have increased their ability to conduct their mission at a much larger scale as they are growing their efforts state-wide.
 
-One bottleneck is the various sites that have inmate information. The current process is to manually check these sites to see if they have new information. This information is to be used for advocacy purposes. 
+One bottleneck is the various sites that have inmate information. The current process is to manually check these sites to see if they have new information. This information is to be used for advocacy purposes.
 
 It is difficult for volunteers to track the current list of county sites to check.
 
@@ -18,15 +18,14 @@ Luckily, these are all spaces where an automated solution can greatly increase t
 
 # Goals
 
-- Be able to extract as much information about inmates as each county makes available in an automated fashion. (scrapers/spiders), the most important data points (if available) being:  
-    * bail amount 
-    * name 
-    * DOB 
-    * sex 
-    * race
-    * booking date
-    * charge
-    
+- Be able to extract as much information about inmates as each county makes available in an automated fashion. (scrapers/spiders), the most important data points (if available) being:
+  - bail amount
+  - name
+  - DOB
+  - sex
+  - race
+  - booking date
+  - charge
 - Be able to know when county sites have been updated with new data.(snapshots)
 
 - Programatically persist all scraped inmate information to a secure place where authorized CCBF individuals can access and use for their advocacy work. For rosters not easily scraped, we will provide a way for data to also be manually entered (via api, database, etc.).
@@ -51,7 +50,7 @@ To start, though, a `virtualenv` will do.
 Run the following to build your venv and 'source' it's context:
 
 - `make`
-- `source inmates-venv/bin/-activate`
+- `source inmates-venv/bin/activate`
 
 Now you can run `pip list` to see that the `inmates` CLI tool was installed.
 Execute the `inmates` command to see available subcommands (`inmates csv -c 'Roster Link'` can be helpful).
@@ -94,10 +93,10 @@ inmates/
 
 When scraping data from a roster, here are four components at play:
 
- * the site to be scraped
- * the spider
- * the data scraped
- * expectations on scraped data
+- the site to be scraped
+- the spider
+- the data scraped
+- expectations on scraped data
 
 The 'sites to be scraped' are all housed in the "commissary/" directory so there's less of a need to reach out to the world wide web.
 Spiders live in the "inmates/scraper/spiders/" directory and there's to be _one for every site in the commissary/_.
@@ -106,6 +105,7 @@ To get started on a new spider, simply run the following:
 ```bash
 make new-spider NAME=new
 ```
+
 where "new" is the name of your `NewSpider` at "inmates/scraper/spiders/new.py".
 Use the `FORCE=true` flag if you'd like to overwrite an existing spider.
 
@@ -127,4 +127,3 @@ make scraper-run
 
 Default behavior for this command is to only output to stdout.
 If output is to be collected, the `$LIVESITE_PARSED_OUTPUT_DIR` environment variable can be set wherein results will be deposited.
-

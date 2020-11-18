@@ -10,16 +10,17 @@ class WillSpider(Spider):
     """
     NOTE: court information is available though not being scraped
     """
-    name = 'will'
+
+    name = "will"
 
     def __init__(self, *args, **kwargs):
-      self.domain = kwargs.get('domain')
-      self.start_urls = [self.domain] if self.domain else kwargs.get('start_urls')
-      self.parsed_urls = [urlparse(url) for url in self.start_urls]
+        self.domain = kwargs.get("domain")
+        self.start_urls = ["https://www.willcosheriff.org/,http://66.158.72.230/NewWorld.InmateInquiry/Public"]
+        self.parsed_urls = [urlparse(url) for url in self.start_urls]
 
     def parse(self, response):
         table_body = response.xpath('//*[@id="Inmate_Index"]/div[2]/div[2]/table/tbody')[0]
-        rows = table_body.xpath('tr')
+        rows = table_body.xpath("tr")
         parsed_url = self.parsed_urls[0]
         for row in rows:
             profile_url = self.extract_profile_url(row)
@@ -34,14 +35,14 @@ class WillSpider(Spider):
         demographic_info = self.parse_demographic_data(demography)
         bookings = response.xpath('//div[@id="BookingHistory"]/div[@class="Booking"]')
         booking_data = [self.parse_booking_data(booking) for booking in bookings]
-        demographic_info['Bookings'] = booking_data
+        demographic_info["Bookings"] = booking_data
         yield demographic_info
 
     def parse_demographic_data(self, demography):
         demographic_info = {}
         for element in demography:
-            key = element.xpath('label/text()').get()
-            value = element.xpath('span/text()').get()
+            key = element.xpath("label/text()").get()
+            value = element.xpath("span/text()").get()
             demographic_info.update({key: value})
         return demographic_info
 
@@ -49,9 +50,9 @@ class WillSpider(Spider):
         booking_data = booking.xpath('./div[@class="BookingData"]')
         booking_info = self.parse_booking_info(booking_data)
         bond_info = self.parse_bond_info(booking_data)
-        booking_info['Bonds'] = bond_info
+        booking_info["Bonds"] = bond_info
         charge_info = self.parse_charge_info(booking_data)
-        booking_info['Charges'] = charge_info
+        booking_info["Charges"] = charge_info
         return booking_info
 
     def parse_bond_info(self, booking_data):
@@ -59,15 +60,15 @@ class WillSpider(Spider):
         keys = booking_data.xpath('./div[@class="BookingBonds"]//table/thead//th/text()').getall()
         vals = booking_data.xpath('./div[@class="BookingBonds"]//table/tbody//td/text()').getall()
         for row in booking_data.xpath('./div[@class="BookingBonds"]//table/tbody/tr'):
-            vals = row.xpath('./td/text()').getall()
+            vals = row.xpath("./td/text()").getall()
             bond_info.append(dict(zip(keys, vals)))
         return bond_info
 
     def parse_booking_info(self, booking_data):
         booking_info = {}
         for element in booking_data.xpath('./ul[@class="FieldList"]/li'):
-            key = element.xpath('label/text()').get()
-            value = element.xpath('span/text()').get()
+            key = element.xpath("label/text()").get()
+            value = element.xpath("span/text()").get()
             booking_info.update({key: value})
         return booking_info
 
@@ -75,7 +76,7 @@ class WillSpider(Spider):
         charge_info = []
         keys = booking_data[0].xpath('./div[@class="BookingCharges"]//table/thead//th/text()').getall()
         for row in booking_data.xpath('./div[@class="BookingCharges"]//table/tbody/tr'):
-            vals = row.xpath('./td/text()').getall()
+            vals = row.xpath("./td/text()").getall()
             charge_info.append(dict(zip(keys, vals)))
         return charge_info
 
@@ -85,6 +86,5 @@ class WillSpider(Spider):
 
     def gen_url(self, path):
         parsed_url = self.parsed_urls[0]
-        url_root = f'{parsed_url.scheme}://{parsed_url.netloc}'
-        return f'{url_root}{path}'
-
+        url_root = f"{parsed_url.scheme}://{parsed_url.netloc}"
+        return f"{url_root}{path}"
